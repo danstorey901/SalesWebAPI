@@ -27,7 +27,7 @@ namespace SalesWebAPI.Controllers
         if (order == null)
         { NotFound(); }
 
-        order.Total = (from ol in _context.Orderline
+        order.Total = (from ol in _context.Orderlines
                        where ol.OrderId == orderId
                        select new {
                            LineTotal = ol.Quantity * ol.Price }).Sum(x => x.LineTotal);
@@ -39,7 +39,7 @@ namespace SalesWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Orderline>>> GetOrderline()
         {
-            return await _context.Orderline
+            return await _context.Orderlines
                                 .Include(x => x.Order)
                                 .ToListAsync();
         }
@@ -48,7 +48,7 @@ namespace SalesWebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Orderline>> GetOrderline(int id)
         {
-            var orderline = await _context.Orderline
+            var orderline = await _context.Orderlines
                                             .Include(x => x.Order)
                                             .SingleOrDefaultAsync(x => x.Id == id);
 
@@ -96,7 +96,7 @@ namespace SalesWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Orderline>> PostOrderline(Orderline orderline)
         {
-            _context.Orderline.Add(orderline);
+            _context.Orderlines.Add(orderline);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetOrderline", new { id = orderline.Id }, orderline);
@@ -106,13 +106,13 @@ namespace SalesWebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrderline(int id)
         {
-            var orderline = await _context.Orderline.FindAsync(id);
+            var orderline = await _context.Orderlines.FindAsync(id);
             if (orderline == null)
             {
                 return NotFound();
             }
 
-            _context.Orderline.Remove(orderline);
+            _context.Orderlines.Remove(orderline);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -120,7 +120,18 @@ namespace SalesWebAPI.Controllers
 
         private bool OrderlineExists(int id)
         {
-            return _context.Orderline.Any(e => e.Id == id);
+            return _context.Orderlines.Any(e => e.Id == id);
         }
     }
 }
+
+
+/* var CustOrders = from o in orders
+                             join c in customers
+                                on o.CustomerId equals c.Id
+                             select new { o, c };
+            foreach (var co in CustOrders)
+            {
+                Console.WriteLine($"{co.c.name} | {co.o.Description} | {co.o.Sales}");
+            }
+*/

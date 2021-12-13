@@ -29,10 +29,8 @@ namespace SalesWebAPI
         {
 
             services.AddControllers();
-            services.AddDbContext<AppDbContext>(x =>
-            {
-                x.UseSqlServer(Configuration.GetConnectionString("AppDbContext"));
-            });
+            services.AddDbContext<AppDbContext>
+                (x =>{ x.UseSqlServer(Configuration.GetConnectionString("AppDbContext")); });
 
             services.AddCors();
             }

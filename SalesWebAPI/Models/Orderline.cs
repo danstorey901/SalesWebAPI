@@ -18,7 +18,7 @@ namespace SalesWebAPI.Models
         public decimal Price { get; set; }
 
         public int OrderId { get; set; }
-        [JsonIgnore]
+        [JsonIgnore] // what do this - do need if FLUENT??
         public virtual Order Order { get; set; }
         public Orderline() { }
     }

@@ -15,8 +15,6 @@ namespace SalesWebAPI.Models
         [Column(TypeName = "decimal(11,2)")]
         public decimal Sales { get; set; }
 
-
-
         public Customer() { }
 
     }
